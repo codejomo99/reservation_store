@@ -1,6 +1,7 @@
 package com.reservation.entity;
 
 
+import com.reservation.dto.StoreRequestDto;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -37,4 +38,11 @@ public class Store extends Timestamped{
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews; // 매장에 대한 리뷰 목록
+
+    public Store(StoreRequestDto storeRequestDto) {
+        this.name = storeRequestDto.getName();
+        this.location = storeRequestDto.getLocation();
+        this.description = storeRequestDto.getDescription();
+    }
+
 }
