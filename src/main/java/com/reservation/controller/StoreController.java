@@ -34,6 +34,10 @@ public class StoreController {
     }
 
     // Update
+    @PutMapping("/stores/{id}")
+    public StoreResponseDto updateStore(@PathVariable Long id, @RequestBody StoreRequestDto storeRequestDto){
+        return storeService.updateStore(id,storeRequestDto);
+    }
 
     // Delete
 }

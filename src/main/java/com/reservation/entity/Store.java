@@ -45,4 +45,9 @@ public class Store extends Timestamped{
         this.description = storeRequestDto.getDescription();
     }
 
+    public void update(StoreRequestDto storeRequestDto) {
+        this.name = storeRequestDto.getName();
+        this.location = storeRequestDto.getLocation();
+        this.description = storeRequestDto.getDescription();
+    }
 }

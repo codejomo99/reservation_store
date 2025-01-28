@@ -8,6 +8,7 @@ import com.reservation.repository.StoreRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,4 +28,16 @@ public class StoreService {
 
         return storeList;
     }
+
+    @Transactional
+    public StoreResponseDto updateStore(Long id, StoreRequestDto storeRequestDto) {
+        Store store = storeRepository.findById(id).orElseThrow(()->
+                new NullPointerException("해당 상점이 없습니다."));
+
+        store.update(storeRequestDto);
+
+        return new StoreResponseDto(store);
+    }
+
+
 }
