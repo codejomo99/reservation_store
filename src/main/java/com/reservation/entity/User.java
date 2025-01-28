@@ -31,8 +31,8 @@ public class User extends Timestamped{
     @Enumerated(EnumType.STRING)
     private UserRoleEnum role;
 
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Store> stores; // 파트너가 등록한 매장 목록
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Store> stores; // 파트너가 등록한 매장 목록
 //
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<Reservation> reservations; // 고객이 예약한 목록

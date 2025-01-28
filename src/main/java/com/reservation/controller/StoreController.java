@@ -2,9 +2,14 @@ package com.reservation.controller;
 
 import com.reservation.dto.StoreRequestDto;
 import com.reservation.dto.StoreResponseDto;
+import com.reservation.entity.UserRoleEnum;
+import com.reservation.security.UserDetailsImpl;
 import com.reservation.service.StoreService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,8 +28,13 @@ public class StoreController {
 
     // Create
     @PostMapping("/stores")
-    public StoreResponseDto createStore(@RequestBody StoreRequestDto storeRequestDto){
-        return storeService.createStore(storeRequestDto);
+    public StoreResponseDto createStore(@RequestBody StoreRequestDto storeRequestDto, @AuthenticationPrincipal
+                                        UserDetailsImpl userDetails){
+        if(userDetails.getUser().getRole().equals(UserRoleEnum.PARTNER)){
+            return storeService.createStore(storeRequestDto,userDetails.getUser());
+        }else {
+            throw new AccessDeniedException("접근 권한이 없습니다.");
+        }
     }
 
     // Read
