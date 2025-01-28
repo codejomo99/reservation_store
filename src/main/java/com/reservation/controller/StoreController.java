@@ -6,6 +6,7 @@ import com.reservation.service.StoreService;
 import java.util.List;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,4 +41,10 @@ public class StoreController {
     }
 
     // Delete
+    @DeleteMapping("/stores/{id}")
+    public String deleteStore(@PathVariable Long id){
+        storeService.deleteStore(id);
+
+        return "삭제에 성공했습니다.";
+    }
 }

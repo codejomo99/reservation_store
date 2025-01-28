@@ -40,4 +40,10 @@ public class StoreService {
     }
 
 
+    public void deleteStore(Long id) {
+        Store store = storeRepository.findById(id).orElseThrow(()->
+                new NullPointerException("해당 상점이 없습니다."));
+
+        storeRepository.delete(store);
+    }
 }
