@@ -4,7 +4,6 @@ import com.reservation.dto.StoreRequestDto;
 import com.reservation.dto.StoreResponseDto;
 import com.reservation.service.StoreService;
 import java.util.List;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

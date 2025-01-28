@@ -1,7 +1,6 @@
 package com.reservation.controller;
 
 
-import com.reservation.dto.LoginRequestDto;
 import com.reservation.dto.SignupRequestDto;
 import com.reservation.entity.User;
 import com.reservation.service.UserService;
