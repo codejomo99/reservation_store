@@ -3,6 +3,7 @@ package com.reservation.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
@@ -21,6 +22,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((requests) -> requests
 //                        .requestMatchers("/", "/home", "/register").permitAll() // 모든 사용자 접근 허용
 //                        .requestMatchers("/partner/**").hasRole("PARTNER") // 파트너만 접근 가능
@@ -29,33 +31,23 @@ public class WebSecurityConfig {
                         .anyRequest().permitAll()
                 )
                 .formLogin((form) -> form
-                        .loginPage("/login") // 커스텀 로그인 페이지
+                        .loginProcessingUrl("/login") // 기본 로그인 엔드포인트로 변경
+                        .successHandler((request, response, authentication) -> {
+                            response.setStatus(HttpStatus.OK.value());
+                            response.getWriter().write("login success");
+                        })
+                        .failureHandler((request, response, exception) -> {
+                            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+                            response.getWriter().write("login fail");
+                        })
                         .permitAll()
                 )
                 .logout(LogoutConfigurer::permitAll // 로그아웃 허용
-                )
-                .csrf(csrf -> csrf.disable());
+                );
 
         return http.build();
     }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        // 테스트용 인메모리 사용자 설정
-        UserDetails partner = User.builder()
-                .username("partner@example.com")
-                .password(passwordEncoder().encode("password"))
-                .roles("PARTNER")
-                .build();
-
-        UserDetails customer = User.builder()
-                .username("customer@example.com")
-                .password(passwordEncoder().encode("password"))
-                .roles("CUSTOMER")
-                .build();
-
-        return new InMemoryUserDetailsManager(partner, customer);
-    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

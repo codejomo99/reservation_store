@@ -19,6 +19,8 @@ public class UserService {
 
     private final String PARTNER_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
     public User signup(SignupRequestDto requestDto) {
+
+        System.out.println(requestDto.isPartner());
         String username = requestDto.getUsername();
         String password = passwordEncoder.encode(requestDto.getPassword());
         String email = requestDto.getEmail();
