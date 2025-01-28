@@ -1,8 +1,8 @@
 package com.reservation.entity;
 
 public enum UserRoleEnum {
-    USER(Authority.PARTNER),  // 사용자 권한
-    ADMIN(Authority.USER);  // 관리자 권한
+    PARTNER(Authority.PARTNER),  // 사용자 권한
+    USER(Authority.USER);  // 관리자 권한
 
     private final String authority;
 

@@ -26,16 +26,16 @@ public class Reservation extends Timestamped{
 
     private LocalDateTime reservationTime;
     private String Status; // Enum ? String?
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user; // 예약한 고객
-
-    @ManyToOne
-    @JoinColumn(name = "store_id", nullable = false)
-    private Store store; // 예약된 매장
-
-    @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
-    private VisitCheck visitCheck; // 방문 확인 정보
+//
+//    @ManyToOne
+//    @JoinColumn(name = "user_id", nullable = false)
+//    private User user; // 예약한 고객
+//
+//    @ManyToOne
+//    @JoinColumn(name = "store_id", nullable = false)
+//    private Store store; // 예약된 매장
+//
+//    @OneToOne(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private VisitCheck visitCheck; // 방문 확인 정보
 
 }

@@ -42,9 +42,7 @@ public class StoreController {
 
     // Delete
     @DeleteMapping("/stores/{id}")
-    public String deleteStore(@PathVariable Long id){
+    public void deleteStore(@PathVariable Long id){
         storeService.deleteStore(id);
-
-        return "삭제에 성공했습니다.";
     }
 }

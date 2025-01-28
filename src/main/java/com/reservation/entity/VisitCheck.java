@@ -21,9 +21,9 @@ public class VisitCheck {
     private Long id;
 
     private LocalDateTime checkTime;
-
-
-    @OneToOne
-    @JoinColumn(name = "reservation_id", nullable = false)
-    private Reservation reservation; // 방문 확인된 예약
+//
+//
+//    @OneToOne
+//    @JoinColumn(name = "reservation_id", nullable = false)
+//    private Reservation reservation; // 방문 확인된 예약
 }
