@@ -1,6 +1,7 @@
 package com.reservation.service;
 
 import com.reservation.dto.ReservationRequestDto;
+import com.reservation.dto.ReservationResponseDto;
 import com.reservation.dto.kioskRequestDto;
 import com.reservation.entity.Reservation;
 import com.reservation.entity.ReservationStatus;
@@ -10,6 +11,8 @@ import com.reservation.repository.ReservationRepository;
 import com.reservation.repository.StoreRepository;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,5 +65,21 @@ public class ReservationService {
         }
 
 
+    }
+
+    public List<ReservationResponseDto> getReservation(User user) {
+        List<Reservation> reservationList = reservationRepository.findAllByUserId(user.getId());
+
+        if(reservationList.isEmpty()){
+            throw new IllegalArgumentException("예약 정보가 없습니다.");
+        }
+
+        List<ReservationResponseDto> responseDtos = new ArrayList<>();
+
+        for(Reservation reservation: reservationList){
+            responseDtos.add(new ReservationResponseDto(reservation));
+        }
+
+        return responseDtos;
     }
 }

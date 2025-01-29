@@ -1,12 +1,16 @@
 package com.reservation.controller;
 
 import com.reservation.dto.ReservationRequestDto;
+
+import com.reservation.dto.ReservationResponseDto;
 import com.reservation.dto.kioskRequestDto;
 import com.reservation.security.UserDetailsImpl;
 import com.reservation.service.ReservationService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +44,10 @@ public class ReservationController {
     }
 
     // 예약조회
+    @GetMapping("/reservation")
+    public List<ReservationResponseDto> getReservations(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return reservationService.getReservation(userDetails.getUser());
+    }
     // 예약수정
     // 예약삭제
 
