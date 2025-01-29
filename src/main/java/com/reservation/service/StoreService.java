@@ -39,10 +39,11 @@ public class StoreService {
     }
 
     @Transactional
-    public StoreResponseDto updateStore(Long id, StoreRequestDto storeRequestDto) {
-        Store store = storeRepository.findById(id).orElseThrow(()->
-                new NullPointerException("해당 상점이 없습니다."));
-
+    public StoreResponseDto updateStore(Long id, StoreRequestDto storeRequestDto, User user) {
+        Store store = storeRepository.findByIdAndUser(id,user);
+        if(store == null){
+            throw new IllegalArgumentException("없는 상점입니다.");
+        }
         store.update(storeRequestDto);
 
         return new StoreResponseDto(store);

@@ -5,6 +5,7 @@ import com.reservation.dto.StoreResponseDto;
 import com.reservation.entity.UserRoleEnum;
 import com.reservation.security.UserDetailsImpl;
 import com.reservation.service.StoreService;
+import java.security.Principal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
@@ -45,8 +46,18 @@ public class StoreController {
 
     // Update
     @PutMapping("/stores/{id}")
-    public StoreResponseDto updateStore(@PathVariable Long id, @RequestBody StoreRequestDto storeRequestDto){
-        return storeService.updateStore(id,storeRequestDto);
+    public StoreResponseDto updateStore(@PathVariable Long id,
+                                        @RequestBody StoreRequestDto storeRequestDto,
+                                        @AuthenticationPrincipal
+                                        UserDetailsImpl userDetails){
+
+        if(!userDetails.getUser().getRole().equals(UserRoleEnum.PARTNER)){
+            return storeService.updateStore(id,storeRequestDto,userDetails.getUser());
+        }else{
+            throw new AccessDeniedException("접근 권한이 없습니다.");
+        }
+
+
     }
 
     // Delete
