@@ -32,9 +32,9 @@ public class Store extends Timestamped{
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user; // 매장을 등록한 파트너
-//
-//    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Reservation> reservations; // 매장에 대한 예약 목록
+
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reservation> reservations; // 매장에 대한 예약 목록
 //
 //    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private List<Review> reviews; // 매장에 대한 리뷰 목록

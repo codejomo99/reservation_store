@@ -14,6 +14,7 @@ public class StoreResponseDto {
     private String location;
     private String description;
 
+
     public StoreResponseDto(Store store) {
         this.name = store.getName();
         this.location = store.getLocation();
