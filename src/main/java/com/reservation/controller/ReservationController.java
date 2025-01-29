@@ -1,7 +1,7 @@
 package com.reservation.controller;
 
 import com.reservation.dto.ReservationRequestDto;
-import com.reservation.dto.ReservationResponseDto;
+import com.reservation.dto.kioskRequestDto;
 import com.reservation.security.UserDetailsImpl;
 import com.reservation.service.ReservationService;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +27,15 @@ public class ReservationController {
     {
 
         reservationService.createReservation(requestDto,userDetails.getUser());
+        return ResponseEntity.ok("Reservation created successfully");
+    }
+
+    // 키오스크 예약 확인
+    @PostMapping("/reservation/kiosk")
+    public ResponseEntity<String> createReservationKiosk(@RequestBody kioskRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+
+        reservationService.createReservationKiosk(requestDto,userDetails.getUser());
+
         return ResponseEntity.ok("Reservation created successfully");
     }
 
