@@ -51,7 +51,7 @@ public class StoreController {
                                         @AuthenticationPrincipal
                                         UserDetailsImpl userDetails){
 
-        if(!userDetails.getUser().getRole().equals(UserRoleEnum.PARTNER)){
+        if(userDetails.getUser().getRole().equals(UserRoleEnum.PARTNER)){
             return storeService.updateStore(id,storeRequestDto,userDetails.getUser());
         }else{
             throw new AccessDeniedException("접근 권한이 없습니다.");
@@ -62,7 +62,14 @@ public class StoreController {
 
     // Delete
     @DeleteMapping("/stores/{id}")
-    public void deleteStore(@PathVariable Long id){
-        storeService.deleteStore(id);
+    public void deleteStore(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails){
+
+        if(userDetails.getUser().getRole().equals(UserRoleEnum.PARTNER)){
+            storeService.deleteStore(id,userDetails.getUser());
+        }else{
+            throw new AccessDeniedException("접근 권한이 없습니다.");
+        }
+
+
     }
 }

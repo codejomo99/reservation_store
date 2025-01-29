@@ -50,9 +50,12 @@ public class StoreService {
     }
 
 
-    public void deleteStore(Long id) {
-        Store store = storeRepository.findById(id).orElseThrow(()->
-                new NullPointerException("해당 상점이 없습니다."));
+    public void deleteStore(Long id, User user) {
+        Store store = storeRepository.findByIdAndUser(id,user);
+
+        if(store == null){
+            throw new IllegalArgumentException("없는 상점입니다.");
+        }
 
         storeRepository.delete(store);
     }
