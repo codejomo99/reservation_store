@@ -1,6 +1,7 @@
 package com.reservation.entity;
 
 
+import com.reservation.dto.ReviewRequestDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,11 +24,18 @@ public class Review extends Timestamped{
 
     private String content;
 
-//    @ManyToOne
-//    @JoinColumn(name = "user_id", nullable = false)
-//    private User user; // 리뷰 작성자
-//
-//    @ManyToOne
-//    @JoinColumn(name = "store_id", nullable = false)
-//    private Store store; // 리뷰 대상 매장
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user; // 리뷰 작성자
+
+    @ManyToOne
+    @JoinColumn(name = "store_id", nullable = false)
+    private Store store; // 리뷰 대상 매장
+
+    public Review(ReviewRequestDto requestDto, User user, Store store) {
+        this.content = requestDto.getContent();
+        this.user = user;
+        this.store = store;
+
+    }
 }

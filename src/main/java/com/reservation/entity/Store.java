@@ -35,9 +35,9 @@ public class Store extends Timestamped{
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reservation> reservations; // 매장에 대한 예약 목록
-//
-//    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Review> reviews; // 매장에 대한 리뷰 목록
+
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews; // 매장에 대한 리뷰 목록
 
     public Store(StoreRequestDto storeRequestDto, User user) {
         this.name = storeRequestDto.getName();

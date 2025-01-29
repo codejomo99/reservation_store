@@ -36,9 +36,9 @@ public class User extends Timestamped{
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reservation> reservations; // 고객이 예약한 목록
-//
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<Review> reviews; // 고객이 작성한 리뷰 목록
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews; // 고객이 작성한 리뷰 목록
 
     public User(String username, String password, String email, UserRoleEnum role) {
         this.username = username;
