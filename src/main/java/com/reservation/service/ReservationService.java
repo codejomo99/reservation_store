@@ -82,4 +82,12 @@ public class ReservationService {
 
         return responseDtos;
     }
+
+    public void deleteReservation(Long reservationId, User user) {
+        Reservation reservation = reservationRepository.findByIdAndUser(reservationId,user);
+        if(reservation == null){
+            throw new IllegalArgumentException("예약 정보가 없습니다.");
+        }
+        reservationRepository.deleteById(reservationId);
+    }
 }
