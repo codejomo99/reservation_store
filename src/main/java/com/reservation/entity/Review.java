@@ -38,4 +38,8 @@ public class Review extends Timestamped{
         this.store = store;
 
     }
+
+    public void update(ReviewRequestDto requestDto) {
+        this.content = requestDto.getContent();
+    }
 }

@@ -1,6 +1,7 @@
 package com.reservation.service;
 
 import com.reservation.dto.ReviewRequestDto;
+import com.reservation.dto.ReviewResponseDto;
 import com.reservation.entity.Reservation;
 import com.reservation.entity.ReservationStatus;
 import com.reservation.entity.Review;
@@ -8,7 +9,9 @@ import com.reservation.entity.Store;
 import com.reservation.entity.User;
 import com.reservation.repository.ReservationRepository;
 import com.reservation.repository.ReviewRepository;
-import com.reservation.repository.UserRepository;
+import jakarta.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +20,7 @@ import org.springframework.stereotype.Service;
 public class ReviewService {
     private final ReservationRepository reservationRepository;
     private final ReviewRepository reviewRepository;
-    private final UserRepository userRepository;
+
 
     public void createReview(ReviewRequestDto requestDto, User user) {
         Reservation reservation = reservationRepository.findByIdAndUser(requestDto.getReservationId(),user);
@@ -36,5 +39,33 @@ public class ReviewService {
             throw new IllegalArgumentException("리뷰권한이 없습니다.");
         }
 
+    }
+
+    public List<ReviewResponseDto> getReview(User user) {
+        List<Review> reviews = reviewRepository.findByUser(user);
+
+        if(reviews.isEmpty()){
+            throw new IllegalArgumentException("댓글 작성한 유저가 없습니다.");
+        }
+
+        List<ReviewResponseDto> responseDtos = new ArrayList<>();
+
+        for(Review review : reviews){
+            responseDtos.add(new ReviewResponseDto(review));
+        }
+
+        return responseDtos;
+    }
+
+    @Transactional
+    public void updateReview(Long id, ReviewRequestDto requestDto, User user) {
+        Review review = reviewRepository.findByIdAndUser(id,user);
+
+        if(review == null){
+            throw new IllegalArgumentException("사용자가 작성한 댓글이 없습니다,");
+        }
+
+        review.update(requestDto);
+        reviewRepository.save(review);
     }
 }

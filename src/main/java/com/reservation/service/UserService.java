@@ -43,7 +43,7 @@ public class UserService {
             if (!PARTNER_TOKEN.equals(requestDto.getPartnerToken())) {
                 throw new IllegalArgumentException("관리자 암호가 틀려 등록이 불가능합니다.");
             }
-            role = UserRoleEnum.PARTNER;
+            role = UserRoleEnum.PARTNER; 
         }
 
         User user = new User(username,password,email,role);
