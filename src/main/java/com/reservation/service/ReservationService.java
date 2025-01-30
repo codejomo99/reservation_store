@@ -41,30 +41,29 @@ public class ReservationService {
 
     @Transactional
     public void createReservationKiosk(kioskRequestDto requestDto, User user) {
-        Reservation reservation = reservationRepository.findByIdAndUser(requestDto.getReservationId(),user);
 
-        if(reservation == null){
-            throw new IllegalArgumentException("예약 정보가 없습니다.");
+        // 1. 예약 조회 (ID로 찾고, 사용자 검증)
+        Reservation reservation = reservationRepository.findById(requestDto.getReservationId())
+                .orElseThrow(() -> new IllegalArgumentException("예약 정보가 없습니다."));
+
+        if (!reservation.getUser().equals(user)) {
+            throw new IllegalArgumentException("권한이 없습니다.");
         }
 
+        // 2. 예약 시간과 키오스크 요청 시간 비교
         LocalDateTime reservationTime = reservation.getReservationTime();
         LocalDateTime nowKioskTime = requestDto.getKioskDateTime();
 
-        // 두 시간의 차이를 계산 (분 단위로)
-        Duration duration = Duration.between(reservationTime, nowKioskTime);
-        long minutesDifference = duration.toMinutes();  // 분 단위로 차이 계산
+        // 두 시간의 차이를 절대값으로 변환 (양수만 반환)
+        long minutesDifference = Math.abs(Duration.between(reservationTime, nowKioskTime).toMinutes());
 
-        // 차이가 10분 이하일 경우만 진행
-        if (minutesDifference <= 10) {
-            // 10분 이하일 때만 처리
-            reservation.updateStatus(ReservationStatus.COMPLETED);
-            reservationRepository.save(reservation);
-            // 예약 처리 로직
-        } else {
+        // 3. 10분 이내인지 확인
+        if (minutesDifference > 10) {
             throw new IllegalArgumentException("10분 이상 차이 나는 예약은 처리할 수 없습니다.");
         }
 
-
+        // 4. 예약 상태 변경 (Dirty Checking 활용 → save() 불필요)
+        reservation.updateStatus(ReservationStatus.COMPLETED);
     }
 
     public List<ReservationResponseDto> getReservation(User user) {
@@ -84,10 +83,14 @@ public class ReservationService {
     }
 
     public void deleteReservation(Long reservationId, User user) {
-        Reservation reservation = reservationRepository.findByIdAndUser(reservationId,user);
-        if(reservation == null){
-            throw new IllegalArgumentException("예약 정보가 없습니다.");
+
+        Reservation reservation = reservationRepository.findById(reservationId).orElseThrow(()->
+                new IllegalArgumentException("예약 정보가 없습니다."));
+
+        if(!reservation.getUser().equals(user)){
+            throw new IllegalArgumentException("권한이 없습니다.");
         }
-        reservationRepository.deleteById(reservationId);
+
+        reservationRepository.delete(reservation);
     }
 }

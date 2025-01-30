@@ -10,7 +10,6 @@ import com.reservation.entity.User;
 import com.reservation.entity.UserRoleEnum;
 import com.reservation.repository.ReservationRepository;
 import com.reservation.repository.ReviewRepository;
-import com.reservation.repository.StoreRepository;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,10 +61,11 @@ public class ReviewService {
 
     @Transactional
     public void updateReview(Long id, ReviewRequestDto requestDto, User user) {
-        Review review = reviewRepository.findByIdAndUser(id, user);
+        Review review = reviewRepository.findById(id).orElseThrow(()->
+                new IllegalArgumentException("작성한 리뷰가 없습니다."));
 
-        if (review == null) {
-            throw new IllegalArgumentException("사용자가 작성한 댓글이 없습니다,");
+        if(!review.getUser().equals(user)){
+            throw new IllegalArgumentException("사용자가 작성한 댓글이 없습니다.");
         }
 
         review.update(requestDto);
