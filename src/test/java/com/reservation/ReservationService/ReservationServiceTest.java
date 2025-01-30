@@ -1,7 +1,10 @@
 package com.reservation.ReservationService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.reservation.BaseTest;
 import com.reservation.dto.KioskRequestDto;
@@ -77,6 +80,35 @@ public class ReservationServiceTest extends BaseTest {
         // then
         assertEquals(ReservationStatus.COMPLETED, testReservation.getStatus());
 
+    }
+
+    @Test
+    @DisplayName("권한 있는 사람이 예약 삭제")
+    void delete_success(){
+        // given
+        Long reservationId = testReservation.getId();  // 삭제할 예약 ID
+
+        // when
+        reservationService.deleteReservation(reservationId, testUser);  // 예약 삭제 수행
+
+        // then
+        assertTrue(reservationRepository.findById(reservationId).isEmpty(), "예약이 삭제되지 않았습니다.");
+    }
+
+    @Test
+    @DisplayName("권한 없는 사람이 예약 삭제")
+    void delete_fail(){
+        // given
+        Long reservationId = testReservation.getId();  // 삭제할 예약 ID
+
+        // when & then
+        // 권한이 없는 사용자로 예약 삭제 시 IllegalArgumentException 예외가 발생하는지 확인
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> {
+            reservationService.deleteReservation(reservationId, testUser2);  // 예약 삭제 수행
+        });
+
+        // 예외 메시지가 "권한이 없습니다."인지 확인
+        assertEquals("권한이 없습니다.", thrown.getMessage(), "예상한 예외 메시지가 아닙니다.");
     }
 
 

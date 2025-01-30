@@ -32,6 +32,7 @@ public class BaseTest {
     public Store savedStore2;
     public User testAdmin;
     public User testUser;
+    public User testUser2;
     public Reservation testReservation;
 
 
@@ -49,6 +50,14 @@ public class BaseTest {
         testUser.setPassword("1234");
         testUser.setEmail("user@naver.com");
         testUser.setRole(UserRoleEnum.USER);
+
+
+        testUser2 = new User();
+        testUser2.setUsername("유저2");
+        testUser2.setPassword("1234");
+        testUser2.setEmail("user@naver.com2");
+        testUser2.setRole(UserRoleEnum.USER);
+
 
         userRepository.save(testUser);
 
