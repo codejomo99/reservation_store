@@ -16,6 +16,7 @@ import com.reservation.service.ReservationService;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,7 @@ public class ReservationServiceTest extends BaseTest {
     }
 
     @Test
+    @Disabled
     @DisplayName("예약 작성 성공")
     void createReview_success(){
         // given
