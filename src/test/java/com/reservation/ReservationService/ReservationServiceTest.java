@@ -4,14 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.reservation.BaseTest;
-import com.reservation.StoreService.StoreServiceTest;
+import com.reservation.dto.KioskRequestDto;
 import com.reservation.dto.ReservationRequestDto;
 import com.reservation.entity.Reservation;
-import com.reservation.entity.Review;
+import com.reservation.entity.ReservationStatus;
 import com.reservation.repository.ReservationRepository;
-import com.reservation.repository.ReviewRepository;
-import com.reservation.repository.StoreRepository;
-import com.reservation.repository.UserRepository;
 import com.reservation.service.ReservationService;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -63,6 +60,22 @@ public class ReservationServiceTest extends BaseTest {
         LocalDateTime checkTime = LocalDateTime.of(2025, 2, 1, 14, 30);
         assertEquals(checkTime, reservation.getReservationTime(), "예약 시간이 일치하지 않습니다.");
 
+    }
+
+    @Test
+    @DisplayName("방문 완료 성공")
+    void visit_success(){
+
+        // given
+        LocalDateTime checkTime = LocalDateTime.of(2025, 1, 30, 15, 30);
+        Long reservationId = testReservation.getId();
+        KioskRequestDto kioskRequestDto = new KioskRequestDto(reservationId,checkTime);
+
+        // when
+        reservationService.createReservationKiosk(kioskRequestDto, testUser);
+
+        // then
+        assertEquals(ReservationStatus.COMPLETED, testReservation.getStatus());
 
     }
 

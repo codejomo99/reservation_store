@@ -3,7 +3,7 @@ package com.reservation.controller;
 import com.reservation.dto.ReservationRequestDto;
 
 import com.reservation.dto.ReservationResponseDto;
-import com.reservation.dto.kioskRequestDto;
+import com.reservation.dto.KioskRequestDto;
 import com.reservation.security.UserDetailsImpl;
 import com.reservation.service.ReservationService;
 import java.util.List;
@@ -38,7 +38,7 @@ public class ReservationController {
 
     // 키오스크 예약 확인
     @PostMapping("/reservation/kiosk")
-    public ResponseEntity<String> createReservationKiosk(@RequestBody kioskRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseEntity<String> createReservationKiosk(@RequestBody KioskRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
 
         reservationService.createReservationKiosk(requestDto,userDetails.getUser());
 

@@ -1,10 +1,13 @@
 package com.reservation.dto;
 
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-public class kioskRequestDto {
+@AllArgsConstructor
+public class KioskRequestDto {
 
     private Long reservationId;
     private LocalDateTime kioskDateTime;

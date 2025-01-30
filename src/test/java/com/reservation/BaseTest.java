@@ -1,12 +1,15 @@
 package com.reservation;
 
+import com.reservation.entity.Reservation;
+import com.reservation.entity.ReservationStatus;
 import com.reservation.entity.Store;
 import com.reservation.entity.User;
 import com.reservation.entity.UserRoleEnum;
+import com.reservation.repository.ReservationRepository;
 import com.reservation.repository.StoreRepository;
 import com.reservation.repository.UserRepository;
-import com.reservation.service.StoreService;
 import jakarta.transaction.Transactional;
+import java.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,10 +24,16 @@ public class BaseTest {
     @Autowired
     private StoreRepository storeRepository;
 
+    @Autowired
+    private ReservationRepository reservationRepository;
+
 
     public Store savedStore;
+    public Store savedStore2;
     public User testAdmin;
     public User testUser;
+    public Reservation testReservation;
+
 
     @BeforeEach()
     public void init(){
@@ -50,7 +59,24 @@ public class BaseTest {
         store.setDescription("테스트 상점입니다.");
         store.setUser(testAdmin); // 소유자 설정
 
+        Store store2 = new Store();
+        store2.setName("Test Store");
+        store2.setLocation("서울 성남구");
+        store2.setDescription("테스트 상점입니다.");
+        store2.setUser(testAdmin); // 소유자 설정
+
         savedStore = storeRepository.save(store);
+        savedStore2 = storeRepository.save(store2);
+
+        // 예약 데이터
+        LocalDateTime reservationTime = LocalDateTime.of(2025, 1, 30, 15, 30);  // 2025-01-30 15:30
+        Reservation reservation = new Reservation();
+        reservation.setReservationTime(reservationTime);
+        reservation.setUser(testUser);
+        reservation.setStore(savedStore2);
+        reservation.setStatus(ReservationStatus.PENDING);
+        testReservation = reservationRepository.save(reservation);
+
     }
 
 }

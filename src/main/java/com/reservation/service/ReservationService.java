@@ -2,7 +2,7 @@ package com.reservation.service;
 
 import com.reservation.dto.ReservationRequestDto;
 import com.reservation.dto.ReservationResponseDto;
-import com.reservation.dto.kioskRequestDto;
+import com.reservation.dto.KioskRequestDto;
 import com.reservation.entity.Reservation;
 import com.reservation.entity.ReservationStatus;
 import com.reservation.entity.Store;
@@ -40,7 +40,7 @@ public class ReservationService {
 
 
     @Transactional
-    public void createReservationKiosk(kioskRequestDto requestDto, User user) {
+    public void createReservationKiosk(KioskRequestDto requestDto, User user) {
 
         // 1. 예약 조회 (ID로 찾고, 사용자 검증)
         Reservation reservation = reservationRepository.findById(requestDto.getReservationId())
