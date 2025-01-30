@@ -34,6 +34,7 @@ public class BaseTest {
     public User testUser;
     public User testUser2;
     public Reservation testReservation;
+    public Reservation testReservation2;
 
 
     @BeforeEach()
@@ -85,6 +86,14 @@ public class BaseTest {
         reservation.setStore(savedStore2);
         reservation.setStatus(ReservationStatus.PENDING);
         testReservation = reservationRepository.save(reservation);
+
+        // 예약 데이터
+        Reservation reservation1 = new Reservation();
+        reservation1.setReservationTime(reservationTime);
+        reservation1.setUser(testUser);
+        reservation1.setStore(savedStore);
+        reservation1.setStatus(ReservationStatus.COMPLETED);
+        testReservation2 = reservationRepository.save(reservation1);
 
     }
 
