@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,11 @@ public class Store extends Timestamped{
     private String name;
     private String location;
     private String description;
+
+    private double rating; // 별점
+
+    @Transient // DB에 저장하지 않음 (계산용)
+    private Double distance; // 사용자 위치 기반 거리
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

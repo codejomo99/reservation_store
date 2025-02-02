@@ -6,8 +6,10 @@ import com.reservation.dto.StoreResponseDto;
 import com.reservation.entity.Store;
 import com.reservation.entity.User;
 import com.reservation.repository.StoreRepository;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,9 +33,31 @@ public class StoreService {
         return new StoreResponseDto(storeRepository.save(store));
     }
 
-    public List<StoreResponseDto> getStore() {
-        List<StoreResponseDto> storeList = storeRepository.findAll().stream()
-                .map(StoreResponseDto::new).toList();
+    public List<StoreResponseDto> getStore(String searchType) {
+
+        List<Sort.Order> sorts = new ArrayList<>();
+
+        // searchType에 따른 정렬 추가
+        switch (searchType) {
+            case "name":
+                sorts.add(Sort.Order.asc("name")); // 이름(가나다순) 오름차순
+                break;
+            case "rating":
+                sorts.add(Sort.Order.desc("rating")); // 별점 내림차순
+                break;
+            case "distance":
+                sorts.add(Sort.Order.asc("distance")); // 거리 오름차순 (가까운 순)
+                break;
+            default:
+                // 기본 정렬 유지
+                break;
+        }
+
+        // 정렬 조건을 적용하여 데이터 조회
+        List<StoreResponseDto> storeList = storeRepository.findAll(Sort.by(sorts))
+                .stream()
+                .map(StoreResponseDto::new)
+                .toList();
 
         return storeList;
     }
