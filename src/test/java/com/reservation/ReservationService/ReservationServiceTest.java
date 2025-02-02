@@ -1,7 +1,6 @@
 package com.reservation.ReservationService;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -46,8 +45,9 @@ public class ReservationServiceTest extends BaseTest {
         // given
         Long storeId = savedStore.getId();
         LocalDateTime reservationTime = LocalDateTime.of(2025, 1, 30, 15, 30);  // 2025-01-30 15:30
+        String number = "010-5551-2345";
 
-        ReservationRequestDto requestDto = new ReservationRequestDto(storeId,reservationTime);
+        ReservationRequestDto requestDto = new ReservationRequestDto(storeId,number,reservationTime);
 
         // when
         reservationService.createReservation(requestDto,testUser);
