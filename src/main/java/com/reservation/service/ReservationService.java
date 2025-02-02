@@ -1,9 +1,11 @@
 package com.reservation.service;
 
+import com.reservation.dto.CheckRequestDto;
 import com.reservation.dto.ReservationRequestDto;
 import com.reservation.dto.ReservationResponseDto;
 import com.reservation.dto.KioskRequestDto;
 import com.reservation.entity.Reservation;
+import com.reservation.entity.ReservationAction;
 import com.reservation.entity.ReservationStatus;
 import com.reservation.entity.Store;
 import com.reservation.entity.User;
@@ -49,6 +51,10 @@ public class ReservationService {
             throw new IllegalArgumentException("권한이 없습니다.");
         }
 
+        if(!reservation.getStatus().equals(ReservationStatus.PENDING)){
+            throw new IllegalArgumentException("아직 예약확인이 되지 않았습니다.");
+        }
+
         // 2. 예약 시간과 키오스크 요청 시간 비교
         LocalDateTime reservationTime = reservation.getReservationTime();
         LocalDateTime nowKioskTime = requestDto.getKioskDateTime();
@@ -91,5 +97,28 @@ public class ReservationService {
         }
 
         reservationRepository.delete(reservation);
+    }
+
+    @Transactional
+    public void checkReservation(CheckRequestDto checkRequestDto, User user) {
+        Reservation reservation = reservationRepository.findById(checkRequestDto.getReservationId()).orElseThrow(
+                ()-> new IllegalArgumentException("예약 정보가 없습니다.")
+        );
+
+        // 점주가 맞는지 확인
+        if(!reservation.getStore().getUser().getId().equals(user.getId())){
+            throw new IllegalArgumentException("접근 권한이 없습니다.");
+        }
+
+        switch(checkRequestDto.getAction()){
+            case CONFIRM:
+                reservation.updateStatus(ReservationStatus.CONFIRMED);
+                break;
+            case REJECT:
+                reservation.updateStatus(ReservationStatus.CANCELED);
+                break;
+            default:
+                throw new IllegalArgumentException("잘못된 요청입니다.");
+        }
     }
 }
