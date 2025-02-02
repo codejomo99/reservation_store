@@ -10,7 +10,7 @@ public class ReservationRequestDto {
 
 
     private Long storeId;
-
+    private String userNumber;
     private LocalDateTime reservationTime;
 
 }

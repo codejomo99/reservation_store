@@ -15,6 +15,7 @@ public class SignupRequestDto {
     @Email
     @NotBlank
     private String email;
+    private String number;
     private boolean partner = false;
     private String partnerToken = "";
 }

@@ -24,6 +24,7 @@ public class UserService {
         String username = requestDto.getUsername();
         String password = passwordEncoder.encode(requestDto.getPassword());
         String email = requestDto.getEmail();
+        String number = requestDto.getNumber();
 
         // 회원 중복
         Optional<User> checkUsername = userRepository.findByUsername(username);
@@ -46,7 +47,7 @@ public class UserService {
             role = UserRoleEnum.PARTNER; 
         }
 
-        User user = new User(username,password,email,role);
+        User user = new User(username,password,email,number,role);
 
         return userRepository.save(user);
     }

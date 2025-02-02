@@ -27,6 +27,7 @@ public class User extends Timestamped{
     private String username;
     private String email;
     private String password;
+    private String number;
 
     @Enumerated(EnumType.STRING)
     private UserRoleEnum role;
@@ -40,7 +41,7 @@ public class User extends Timestamped{
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews; // 고객이 작성한 리뷰 목록
 
-    public User(String username, String password, String email, UserRoleEnum role) {
+    public User(String username, String password, String email, String number, UserRoleEnum role) {
         this.username = username;
         this.email = email;
         this.password = password;

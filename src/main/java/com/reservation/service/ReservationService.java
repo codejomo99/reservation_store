@@ -34,7 +34,6 @@ public class ReservationService {
         if (existiReservation != null) {
             throw new IllegalArgumentException("이미 같은 예약이 존재합니다.");
         }
-
         reservationRepository.save(new Reservation(requestDto,user,store));
     }
 
